@@ -16,26 +16,26 @@ class SQLQuery:
                     ST_GeogPoint(CAST(checkout_longitude AS FLOAT64),CAST(checkout_latitude AS FLOAT64))) distance_meters
                 FROM (
                         SELECT  
-                                    e.fullvisitorid, 
-                                    e.visitNumber,
-                                    e.visitId,
-                                    MAX(h.transactionId) transaction_id,
-                                    MAX(CASE WHEN sc.index = 18 AND h.eventCategory LIKE '%shop_list' THEN sc.value END) as entry_longitude, 
-                                    MAX(CASE WHEN sc.index = 19 AND h.eventCategory LIKE '%shop_list' THEN sc.value END) as entry_latitude,
-                                    MAX(CASE WHEN sc.index = 18 AND h.eventCategory LIKE '%checkout' THEN sc.value END) as checkout_longitude, 
-                                    MAX(CASE WHEN sc.index = 19 AND h.eventCategory LIKE '%checkout' THEN sc.value END) as checkout_latitude
-                        FROM `dhh-analytics-hiringspace.GoogleAnalyticsSample.ga_sessions_export` as e,
+                            e.fullvisitorid, 
+                            e.visitNumber,
+                            e.visitId,
+                            MAX(h.transactionId) transaction_id,
+                            MAX(CASE WHEN sc.index = 18 AND h.eventCategory LIKE '%shop_list' THEN sc.value END) as entry_longitude, 
+                            MAX(CASE WHEN sc.index = 19 AND h.eventCategory LIKE '%shop_list' THEN sc.value END) as entry_latitude,
+                            MAX(CASE WHEN sc.index = 18 AND h.eventCategory LIKE '%checkout' THEN sc.value END) as checkout_longitude, 
+                            MAX(CASE WHEN sc.index = 19 AND h.eventCategory LIKE '%checkout' THEN sc.value END) as checkout_latitude
+                        FROM `dynamic-bongo-327518.GoogleAnalyticsSample.ga_sessions_export` as e,
                         
                         UNNEST(hit) AS h,
                         UNNEST(h.customDimensions) AS sc
                         
                         WHERE (h.eventCategory like '%shop_list' OR h.eventCategory like '%checkout' OR h.eventCategory like '%order_confirmation')
                         AND  e.fullvisitorid = '{fullvisitorId}'
-                        
+
                         GROUP BY
-                                    e.fullvisitorid, 
-                                    e.visitNumber,
-                                    e.visitId
+                            e.fullvisitorid, 
+                            e.visitNumber,
+                            e.visitId
                 ) AS E
                 WHERE   SAFE_CAST(checkout_latitude AS FLOAT64) IS NOT NULL 
                 AND     SAFE_CAST(entry_latitude AS FLOAT64) IS NOT NULL
@@ -50,7 +50,7 @@ class SQLQuery:
                 CASE WHEN e.frontendOrderId IS NULL THEN FALSE ELSE TRUE END is_order_placed,
                 CASE WHEN e.status_id = 24 THEN TRUE ELSE FALSE END Is_order_delivered
             FROM  CustomerChangedPositions c
-            LEFT JOIN  `dhh-analytics-hiringspace.BackendDataSample.transactionalData` e 
+            LEFT JOIN  `dynamic-bongo-327518.BackendDataSample.transactionalData` e 
             ON e.frontendOrderId = c.transaction_id
         """
         return query
