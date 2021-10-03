@@ -1,5 +1,5 @@
 from google.cloud import bigquery
-from queries import SQLQuery
+from resources.queries import SQLQuery
 import logging
 
 class GoogleAnalytics:
@@ -17,20 +17,23 @@ class GoogleAnalytics:
             logging.error(e)
 
     def get_location_order_analytics(self, query_job):
+        response=[]
         for row in query_job:
-            # Row values can be accessed by field name or index.
-            print("name={}, count={}".format(row[0], row["common_name"]))
+            response.append({
+                'full_visitor_id': row['fullvisitorid'], 
+                'address_changed': row['address_changed'],
+                'is_order_placed': row['is_order_placed'], 
+                'is_order_delivered': row['is_order_delivered'], 
+                'application_type': row['operatingSystem']
+            })
+        return response
     
     def process_job_by_visitor_id(self, fullvisitorId):
         try:
-            fullvisitorId = int(fullvisitorId)
             logging.info("Querying data from the Dataset to analyze")
-            query = SQLQuery().get_stmt_for_order_location_analytics("fullvisitorId")
+            query = SQLQuery().get_stmt_for_order_location_analytics(fullvisitorId)
             query_job = self.get_query_job_result(query)
             return self.get_location_order_analytics(query_job)
-        except ValueError:
-            logging.error('fullVisitorId should be integer')
-            return None
         except Exception as e:
             logging.error(e)
             return None

@@ -10,6 +10,7 @@ class SQLQuery:
                     e.visitNumber,
                     e.visitId,
                     e.transaction_id,
+                    e.operatingSystem,
                     ST_GeogPoint(CAST(entry_longitude AS FLOAT64),CAST(entry_latitude AS FLOAT64)) entry_point,
                     ST_GeogPoint(CAST(checkout_longitude AS FLOAT64),CAST(checkout_latitude AS FLOAT64)) checkout_point,
                     ST_DISTANCE(ST_GeogPoint(CAST(entry_longitude AS FLOAT64),CAST(entry_latitude AS FLOAT64)), 
@@ -19,6 +20,7 @@ class SQLQuery:
                             e.fullvisitorid, 
                             e.visitNumber,
                             e.visitId,
+                            e.operatingSystem,
                             MAX(h.transactionId) transaction_id,
                             MAX(CASE WHEN sc.index = 18 AND h.eventCategory LIKE '%shop_list' THEN sc.value END) as entry_longitude, 
                             MAX(CASE WHEN sc.index = 19 AND h.eventCategory LIKE '%shop_list' THEN sc.value END) as entry_latitude,
@@ -35,7 +37,8 @@ class SQLQuery:
                         GROUP BY
                             e.fullvisitorid, 
                             e.visitNumber,
-                            e.visitId
+                            e.visitId,
+                            e.operatingSystem
                 ) AS E
                 WHERE   SAFE_CAST(checkout_latitude AS FLOAT64) IS NOT NULL 
                 AND     SAFE_CAST(entry_latitude AS FLOAT64) IS NOT NULL
@@ -44,11 +47,23 @@ class SQLQuery:
             ) 
             
             SELECT
-                c.fullvisitorid,  c.visitId, c.transaction_id, c.entry_point,c.checkout_point, c.distance_meters, e.backendOrderId,
-                e.frontendOrderId, e.status_id,  e.declinereason_code, e.declinereason_type, e.deliveryType, e.geopointDropoff,
+                c.fullvisitorid,
+                c.visitId,
+                c.transaction_id, 
+                c.entry_point,
+                c.checkout_point,
+                c.distance_meters, 
+                c.operatingSystem,
+                e.backendOrderId,
+                e.frontendOrderId, 
+                e.status_id,
+                e.declinereason_code,
+                e.declinereason_type,
+                e.deliveryType,
+                e.geopointDropoff,
                 CASE WHEN c.distance_meters > 0 THEN TRUE ELSE FALSE END address_changed,
                 CASE WHEN e.frontendOrderId IS NULL THEN FALSE ELSE TRUE END is_order_placed,
-                CASE WHEN e.status_id = 24 THEN TRUE ELSE FALSE END Is_order_delivered
+                CASE WHEN e.status_id = 24 THEN TRUE ELSE FALSE END is_order_delivered
             FROM  CustomerChangedPositions c
             LEFT JOIN  `dynamic-bongo-327518.BackendDataSample.transactionalData` e 
             ON e.frontendOrderId = c.transaction_id
