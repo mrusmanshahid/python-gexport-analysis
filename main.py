@@ -1,6 +1,5 @@
 
-from google_analytics import GoogleAnalytics
-
+from resources.google_analytics import GoogleAnalytics
 
 if __name__ == "__main__":
 

@@ -34,7 +34,3 @@ class GoogleAnalytics:
         except Exception as e:
             logging.error(e)
             return None
-
-
-#Reference: http://www.easypythondocs.com/validation.html
-
