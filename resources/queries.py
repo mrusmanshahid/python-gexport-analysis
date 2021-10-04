@@ -26,7 +26,7 @@ class SQLQuery:
                             MAX(CASE WHEN sc.index = 19 AND h.eventCategory LIKE '%shop_list' THEN sc.value END) as entry_latitude,
                             MAX(CASE WHEN sc.index = 18 AND h.eventCategory LIKE '%checkout' THEN sc.value END) as checkout_longitude, 
                             MAX(CASE WHEN sc.index = 19 AND h.eventCategory LIKE '%checkout' THEN sc.value END) as checkout_latitude
-                        FROM `dynamic-bongo-327518.GoogleAnalyticsSample.ga_sessions_export` as e,
+                        FROM `dhh-analytics-hiringspace.GoogleAnalyticsSample.ga_sessions_export` as e,
                         
                         UNNEST(hit) AS h,
                         UNNEST(h.customDimensions) AS sc
@@ -65,7 +65,7 @@ class SQLQuery:
                 CASE WHEN e.frontendOrderId IS NULL THEN FALSE ELSE TRUE END is_order_placed,
                 CASE WHEN e.status_id = 24 THEN TRUE ELSE FALSE END is_order_delivered
             FROM  CustomerChangedPositions c
-            LEFT JOIN  `dynamic-bongo-327518.BackendDataSample.transactionalData` e 
+            LEFT JOIN  `dhh-analytics-hiringspace.BackendDataSample.transactionalData` e 
             ON e.frontendOrderId = c.transaction_id
         """
         return query
