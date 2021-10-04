@@ -9,7 +9,7 @@ As prerequisite please install [python3](https://www.python.org/downloads/).
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install google-cloud-bigquery client.
 
 ```bash
-pip install --upgrade google-cloud-bigquery
+pip3 install --upgrade google-cloud-bigquery
 ```
 ## Export Environment Variable
 
