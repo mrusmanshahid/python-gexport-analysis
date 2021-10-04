@@ -1,5 +1,6 @@
 from google.cloud import bigquery
 from resources.queries import SQLQuery
+from resources.common import Common
 import logging
 
 class GoogleAnalytics:
@@ -33,7 +34,7 @@ class GoogleAnalytics:
             logging.info("Querying data from the Dataset to analyze")
             query = SQLQuery().get_stmt_for_order_location_analytics(fullvisitorId)
             query_job = self.get_query_job_result(query)
-            return self.get_location_order_analytics(query_job)
+            return Common().response(self.get_location_order_analytics(query_job))
         except Exception as e:
             logging.error(e)
-            return None
+            return Common.response_error(e)
