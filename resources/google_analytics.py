@@ -7,6 +7,7 @@ class GoogleAnalytics:
 
     def __init__(self):
         self.client = bigquery.Client()
+        self.common = Common()
 
     def get_query_job_result(self, query):
         try:    
@@ -28,13 +29,16 @@ class GoogleAnalytics:
                 'application_type': row['operatingSystem']
             })
         return response
-    
+
     def process_job_by_visitor_id(self, fullvisitorId):
         try:
             logging.info("Querying data from the Dataset to analyze")
             query = SQLQuery().get_stmt_for_order_location_analytics(fullvisitorId)
             query_job = self.get_query_job_result(query)
-            return Common().response(self.get_location_order_analytics(query_job))
+            data = self.get_location_order_analytics(query_job)
+            if self.common.validate_empty(data):
+                return self.common.response_empty(data)
+            return self.common.response(data)
         except Exception as e:
             logging.error(e)
-            return Common.response_error(e)
+            return self.common.response_error(e)

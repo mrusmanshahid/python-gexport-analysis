@@ -11,6 +11,7 @@ class Common:
         return  {"status": 500, "response_message":"Error", "response_code":"ERROR", "data": obj }
 
     def response(self, obj):
-        if obj == [] or obj == "" or obj == {}:
-            return self.response_empty(obj)
         return {"status": 200, "response_message":"Success", "response_code":"SUCCESS", "data": obj }
+    
+    def validate_empty(self, obj):
+        return obj == [] or obj == {} or obj == ""
