@@ -7,7 +7,7 @@ from argparse import ArgumentParser
 if __name__ == "__main__":
 
    parser = ArgumentParser(description='argument parser for analytics')
-   parser.add_argument('--full_visitor_id', default=False, required=True, help='fullvisitorId to process data')
+   parser.add_argument('--full_visitor_id', default=None, required=False, help='fullvisitorId to process data')
    parser.add_argument('--run_test', default=False, action='store_true', help='Hyper parameter to validate test result')
    parser.set_defaults(run_test=False)
    parsed_args = parser.parse_args()
