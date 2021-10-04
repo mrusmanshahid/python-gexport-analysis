@@ -12,11 +12,16 @@ if __name__ == "__main__":
    parser.set_defaults(run_test=False)
    parsed_args = parser.parse_args()
 
+   # if the --run_test argument is provided then this section will execute 
+   # and runs all the test cases within the project.
    if parsed_args.run_test:
       logging.info("Performing Unit Test Cases")
       suite = unittest.TestLoader().discover('.', pattern = "*_test.py")
       unittest.TextTestRunner(verbosity=2).run(suite)
 
+   # if the --full_visitor_id argument is provided then this section will execute 
+   # and prints the response output.
    if parsed_args.full_visitor_id:
+      logging.info("Performing Analysis")
       response = GoogleAnalytics().process_job_by_visitor_id(parsed_args.full_visitor_id)
       print(response)
