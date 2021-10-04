@@ -26,7 +26,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"
 python3 main.py --run_test
 
 # To perform analysis for any full_visitor_id run the project as mentioned below.
-python3 main.py --full_visitor_id= <enter_full_visitor_id>
+python3 main.py --full_visitor_id=<enter_full_visitor_id>
 
 ```
 
