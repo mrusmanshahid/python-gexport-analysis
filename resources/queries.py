@@ -1,6 +1,9 @@
 
 class SQLQuery:
 
+    # the method return the query form after taking 
+    # fullvisitorId as input and returns big-query as 
+    # an output ready for execution.
     def get_stmt_for_order_location_analytics(self,fullvisitorId):
         query = f"""
             WITH CustomerChangedPositions
