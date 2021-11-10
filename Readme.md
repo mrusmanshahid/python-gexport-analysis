@@ -13,7 +13,7 @@ pip3 install --upgrade google-cloud-bigquery
 ```
 ## Export Environment Variable
 
-Set your service account key-pair json file path in the environment varibale having name GOOGLE_APPLICATION_CREDENTIALS. If you are new google service accounts then setup using the following [link](https://cloud.google.com/bigquery/docs/reference/libraries).
+Set your service account key-pair json file path in the environment variable having name GOOGLE_APPLICATION_CREDENTIALS. If you are new to google service accounts then setup using the following [link](https://cloud.google.com/bigquery/docs/reference/libraries).
 
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"
